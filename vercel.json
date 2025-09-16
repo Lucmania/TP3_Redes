@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "spa/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "rest-api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "webhook-service/index.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/rest-api/index.js"
+    },
+    {
+      "src": "/webhook/(.*)",
+      "dest": "/webhook-service/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/spa/server.js"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": "@mongodb-uri",
+    "JWT_SECRET": "@jwt-secret",
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "spa/server.js": {
+      "maxDuration": 30
+    },
+    "rest-api/index.js": {
+      "maxDuration": 30
+    },
+    "webhook-service/index.js": {
+      "maxDuration": 30
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "websocket-server",
+  "version": "1.0.0",
+  "description": "Servidor WebSocket para recibir datos de temperatura",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "express": "^5.1.0",
+    "ws": "^8.14.2"
+  }
+}

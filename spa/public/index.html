@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP3 - Sistema de Monitoreo de Temperatura</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        // Fix para Chart.js exports
+        if (typeof module === 'undefined') {
+            window.module = { exports: {} };
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🌡️ 天气在你手中</h1>
+                <p class="subtitle">Sistema de Monitoreo de Temperatura en Tiempo Real</p>
+                <div class="status-indicators">
+                    <div class="status-item">
+                        <span class="status-dot" id="ws-status"></span>
+                        <span>WebSocket</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot" id="api-status"></span>
+                        <span>API</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-dot" id="data-status"></span>
+                        <span>Datos</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Login Section -->
+        <div id="login-section" class="login-section">
+            <div class="login-card">
+                <h2>Iniciar Sesión</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                </form>
+                <div class="login-info">
+                    <p><strong>Usuario Demo:</strong> admin@tp3.com</p>
+                    <p><strong>Contraseña:</strong> admin123</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard" class="dashboard" style="display: none;">
+            <!-- Controls -->
+            <div class="controls">
+                <div class="control-group">
+                    <label for="city-filter">Ciudad:</label>
+                    <select id="city-filter">
+                        <option value="">Todas las ciudades</option>
+                        <option value="Shanghai">Shanghai</option>
+                        <option value="Berlin">Berlin</option>
+                        <option value="Rio de Janeiro">Rio de Janeiro</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="time-range">Rango de tiempo:</label>
+                    <select id="time-range">
+                        <option value="1h">Última hora</option>
+                        <option value="6h">Últimas 6 horas</option>
+                        <option value="24h">Último día</option>
+                        <option value="7d">Última semana</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <button id="refresh-btn" class="btn btn-secondary">🔄 Actualizar</button>
+                    <button id="export-btn" class="btn btn-success">📊 Exportar</button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Shanghai</h3>
+                    <div class="stat-value" id="shanghai-temp">--°C</div>
+                    <div class="stat-time" id="shanghai-time">--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Berlin</h3>
+                    <div class="stat-value" id="berlin-temp">--°C</div>
+                    <div class="stat-time" id="berlin-time">--</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Rio de Janeiro</h3>
+                    <div class="stat-value" id="rio-temp">--°C</div>
+                    <div class="stat-time" id="rio-time">--</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3>📈 Temperatura en Tiempo Real</h3>
+                    <canvas id="temperature-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>🌡️ Comparación por Ciudad</h3>
+                    <canvas id="comparison-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>📊 Distribución de Temperaturas</h3>
+                    <canvas id="distribution-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>⏰ Tendencia Temporal</h3>
+                    <canvas id="trend-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="data-section">
+                <h3>📋 Datos Recientes</h3>
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>Ciudad</th>
+                                <th>Temperatura</th>
+                                <th>Fecha</th>
+                                <th>Categoría</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Logout -->
+            <div class="logout-section">
+                <button id="logout-btn" class="btn btn-danger">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>Cargando datos...</p>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications" class="notifications"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

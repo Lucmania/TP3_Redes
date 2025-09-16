@@ -1,0 +1,33 @@
+{
+  "name": "tp3-microservicios-temperatura",
+  "version": "1.0.0",
+  "description": "Sistema de microservicios para monitoreo de temperatura - TP3",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run websocket-client\" \"npm run websocket-server\" \"npm run webhook\" \"npm run api\" \"npm run spa\"",
+    "demo": "node scripts/start-demo.js",
+    "setup-db": "node scripts/setup-mongodb.js",
+    "create-data": "node scripts/create-test-data.js",
+    "websocket-client": "cd websocket-client && npm start",
+    "websocket-server": "cd websocket-server && npm start",
+    "webhook": "cd webhook-service && npm start",
+    "api": "cd rest-api && npm start",
+    "spa": "cd spa && npm start",
+    "install-all": "npm install && cd websocket-client && npm install && cd ../websocket-server && npm install && cd ../webhook-service && npm install && cd ../rest-api && npm install && cd ../spa && npm install"
+  },
+  "keywords": [
+    "microservices",
+    "websocket",
+    "temperature",
+    "monitoring"
+  ],
+  "author": "Equipo TP3",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "mongoose": "^8.18.1"
+  }
+}
